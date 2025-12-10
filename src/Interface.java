@@ -62,21 +62,30 @@ public class Interface extends Application {
                 logger.initialEntry();
                 try {
                     long inputNumber = Long.parseLong(numberTF.getText());
-                    if (inputNumber % 2 == 0) {
-                        throw new Exception("Given number is even");
-                    }
-                    if(inputNumber>Math.pow(2,62)-1){
+					boolean isTwo=false;
+					boolean result=false;
+					if(inputNumber==2){
+						isTwo=true;
+					}
+					
+                    if(inputNumber>Math.pow(2,62)-1 || inputNumber<2){
                         throw new InputMismatchException();
                     }
-
+					if (inputNumber % 2 == 0) {
+						if(inputNumber!=2 || inputNumber!=0) throw new Exception("Given number is even");
+                    }
+					
                     long repeats = Long.parseLong(repeatsTF.getText());
+					if(repeats<1 || repeats>Math.pow(2,62)-1) throw new Exception("Incorrect repeat count");
 
                     logger.writeLog("Input number: "+inputNumber+"\n"+"Repeats: "+repeats,true);
+					
+					if(!isTwo){
+						Backend b = new Backend(inputNumber,repeats);
+						result = b.run();
+					}
 
-                    Backend b = new Backend(inputNumber,repeats);
-                    boolean result = b.run();
-
-                    if(result){
+                    if(result || isTwo){
                         resultTextArea.setText(resultTextArea.getText()+"Number "+inputNumber+" is prime."+"\n");
                         resultTextArea.requestFocus();
                         resultTextArea.end();
@@ -99,7 +108,7 @@ public class Interface extends Application {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText("InputMismatchException");
-                    alert.setContentText("Given number is greater than 2^62-1 or not a number.");
+                    alert.setContentText("Given number is lower than 2 or greater than 2^62-1 or not a number.");
                     alert.showAndWait().ifPresent(rs -> {
                         if (rs == ButtonType.OK) {
                             System.out.println("Pressed OK.");

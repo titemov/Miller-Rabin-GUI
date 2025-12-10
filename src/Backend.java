@@ -57,7 +57,7 @@ public class Backend {
                 }
             }
             if(isPrime) {
-                logger.writeLog("Given number " + this.num + " is prime. Primarity witness: " + randNum+"\n",true);
+                logger.writeLog("Given number " + this.num + " is prime. Witness: " + randNum+"\n",true);
             }else{
                 logger.writeLog("Given number " + this.num + " is not prime.\n",true);
                 break;
